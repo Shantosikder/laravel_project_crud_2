@@ -36,12 +36,20 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name'=> 'required | max:10 | min:5',
+            'details'=> 'required',
+            'photo'=> 'required | image | mimes:jpeg,png,jpg | max:2048',
+        ]);
+        $imageName = time().'.'.$request->photo->extension();
+
         $product = new product;
         $product->name = $request->name;
         $product->detail = $request->details;
+        $product->photo = $imageName;
         $product->save();
-
-        return redirect()->route('products.index');
+        $request->photo->move(public_path('images'),$imageName);
+        return redirect()->route('products.index')->with('success','Save Successful');
     }
 
     /**
@@ -52,7 +60,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return view('product.show',compact('product'));
     }
 
     /**
@@ -63,7 +71,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('product.edit', compact('product')); //edit
     }
 
     /**
@@ -75,7 +83,11 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $product->name = $request->name;
+        $product->detail = $request->details;
+        $product->update();
+        return redirect()->route('products.index')->with('success','Updated Successful');
+        
     }
 
     /**
@@ -88,6 +100,6 @@ class ProductController extends Controller
     {
         
     $product->delete();
-    return redirect()->route('products.index');
+    return redirect()->route('products.index')->with('success','Deleted Successful');
     }
 }

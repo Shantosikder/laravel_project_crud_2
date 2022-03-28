@@ -1,36 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+@extends('product.master')
 
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+@section('content')
 
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	<title>product</title>
-</head>
-<body>
-	<h1>Product Entry::</h1>
+		<h1>Product Entry::</h1>
+	<form action="{{ROUTE('products.store')}}" method="post" enctype="multipart/form-data">
 
-
-	<form action="{{ROUTE('products.store')}}" method="post">
+		@include('product.error')
+		
 		@csrf
 		<div class="form-group">
 			<label for="name">Product Name:</label>
-			<input type="name" id="name" name="name" class="form-control">		
+			<input type="text" id="name" name="name" class="form-control" placeholder="Enter Your Name">		
 		</div>
 		<div class="form-group">
 			<label for="details">Details:</label><br>
-			<textarea name="details" id="" cols="30" rows="10" class="form-control"></textarea>
+			<textarea placeholder="Enter Your Details" name="details" id="" cols="30" rows="10" class="form-control"></textarea>
 		</div>
-
-		<button type="submit" class="btn btn-default">SUBMIT</button>
-
+		<div class="form-group">
+			<label for="name">Photo:</label>
+			<input type="file" name="photo" class="form-control">		
+		</div>
+		<button type="submit" class="btn btn-success">SUBMIT</button>
 	</form>
 
-</body>
-</html>
+
+@endsection
+
